@@ -41,8 +41,7 @@ def normalize(src_path, dest_path):
             destcsv.writerow(nrow)
             if i % 100000 == 99999:
                 print("\t...on row #", i)
-                break;
-
+    # all done
     destfile.close()
 
 

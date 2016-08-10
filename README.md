@@ -19,3 +19,8 @@ csvcut -c \
     detail1_ data/fetched/nypd-stop-and-frisk/csv/2006.csv \
     | sort | uniq -c | sort -rn | head -n 10
 ```
+
+
+#### wepfound column
+
+No other year has a `wepfound` column. So we omit it from the compiled file.
