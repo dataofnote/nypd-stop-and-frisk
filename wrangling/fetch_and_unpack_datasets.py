@@ -6,8 +6,8 @@ Downloads and unpacks zipped CSV files from the NYPD official data site
 from pathlib import Path
 from shutil import unpack_archive
 from sys import argv
-from project_settings import (FETCHED_ZIP_DIR as DEST_ZIP_DIR,
-                              FETCHED_CSV_DIR as DEST_CSV_DIR)
+from project_settings import FETCHED_ZIP_DIR as DEST_ZIP_DIR,\
+                              FETCHED_CSV_DIR as DEST_CSV_DIR
 import requests
 
 
