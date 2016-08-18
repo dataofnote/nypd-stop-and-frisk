@@ -1,7 +1,7 @@
 # Do not stash the files produced by the fetching/wrangling scripts
-data/**/fetched
-data/**/normalized
-
+_tmp
+wrangle/corral
+.DS_Store
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
