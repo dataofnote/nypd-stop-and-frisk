@@ -1,28 +1,47 @@
 #!/usr/bin/env python
+# COMPLETE_HEADERS = HOMOGENIZED_HEADERS + ['datetime_stop', 'was_force_used',
+#                                           'longitude', 'latitude']
+
+from signal import signal, SIGPIPE, SIG_DFL
+signal(SIGPIPE,SIG_DFL)
+
 
 import argparse
 import cleaning_utils
-from homogenize import HOMOGENIZED_HEADERS
 from csv import DictReader, DictWriter
+from homogenize import HOMOGENIZED_HEADERS
+from loggy import loggy
 from sys import stdout
 
-CLEANED_HEADERS = ['datestop', 'timestop', 'datetime_stop']
+LOGGY = loggy("clean")
+
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser("Clean input file with specified cleaning utils")
     parser.add_argument('infile', type=argparse.FileType('r'))
     parser.add_argument('cleaner', type=str)
     args = parser.parse_args()
-    cleaning_foo = getattr(cleaning_utils, args.cleaner)
+    cleaner_name = args.cleaner
+    infile = args.cleaner
 
-    csvout = DictWriter(stdout, extrasaction='ignore', fieldnames=CLEANED_HEADERS)
+    fooclean = getattr(cleaning_utils, cleaner_name)
+    fooheaders = cleaning_utils.DERIVED_HEADERS[cleaner_name]
+    cleaned_headers = HOMOGENIZED_HEADERS + list(fooheaders)
+
+
+    # todo TK: shouldn't rely on first line of headers
+    LOGGY.info('Reading from %s' % infile)
+    csvin = DictReader(args.infile, fieldnames=HOMOGENIZED_HEADERS)
+
+    csvout = DictWriter(stdout, extrasaction='ignore', fieldnames=cleaned_headers)
     csvout.writeheader()
 
-    csvin = DictReader(args.infile, fieldnames=HOMOGENIZED_HEADERS) # todo: shouldn't rely on first line of headers
+    _headerrow = sorted(HOMOGENIZED_HEADERS)
     for row in csvin:
-        if row == HOMOGENIZED_HEADERS:
+        if sorted(row.values()) == _headerrow:
             pass
         else:
-            d = cleaning_foo(row)
-            row.update(d)
+            new_attrs = fooclean(row)
+            row.update(new_attrs)
             csvout.writerow(row)

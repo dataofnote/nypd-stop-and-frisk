@@ -1,4 +1,19 @@
-def fix_datetime_stop(datarow):
+
+import pyproj
+NYSP1983_PROJ = pyproj.Proj(init="ESRI:102718", preserve_units=True)
+
+DERIVED_HEADERS = {
+    'derive_datetime_stop': ('datetime_stop',),
+    'derive_use_of_force': ('force_used',),
+    'derive_latlng': ('longitude', 'latitude',),
+    'derive_yesno': (),
+}
+
+
+
+
+
+def derive_datetime_stop(datarow):
     """
     Attempts to complete incomplete datetime strings
     `datarow` is a dict, presumably a data row from homogenized
@@ -33,3 +48,36 @@ def fix_datetime_stop(datarow):
     cleaned_date = '{yr}-{mth}-{day}'.format(yr=dx[-4:], mth=dx[0:2], day=dx[2:4])
 
     return {'datetime_stop': "{0} {1}".format(cleaned_date, cleaned_time)}
+
+
+
+def derive_use_of_force(row):
+    """
+    Returns 'Y' if any of the row's values for force-related attributes is 'Y';
+    otherwise, returns 'N'
+
+    Note: probably should run derive_yesno to normalize this to Y or N...
+    """
+    fd = next((row[c] for c in USE_OF_FORCE_HEADERS if row[c] == 'Y'), 'N')
+    return {'force_used': fd}
+
+
+def derive_latlng(row):
+    if row['xcoord'] and row['ycoord']:
+        lnglat = NYSP1983_PROJ(int(row['xcoord']),
+                               int(row['ycoord']),
+                               inverse=True)
+        return dict(zip(['longitude', 'latitude'], [round(c, 5) for c in lnglat]))
+    else:
+        return {'longitude': None, 'latitude': None}
+
+def derive_yesno(row):
+    pass
+
+
+def _yesno(val):
+    """helper method to normalize Y/N/'' columns
+    `val`: str; expected to be y,n,(None),Y,N
+    Returns: str; 'Y' or 'N'; blanks are removed
+    """
+    return 'Y' if v == 'Y' else 'N'

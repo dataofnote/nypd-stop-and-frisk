@@ -1,29 +1,24 @@
 #!/usr/bin/env python
+"""
+Makes sure all files follow the same schema, including older years
+that don't have the columns from newer years (values are left blank)
+"""
 
+import argparse
 from copy import copy
 from csv import DictReader, DictWriter
-from sys import argv, stdout
+from loggy import loggy
+from settings import homogenized_headers, renamed_headers_map
 import re
+from sys import argv, stdout
+
+LOGGY = loggy('homogenize')
 
 
+HOMOGENIZED_HEADERS = homogenized_headers()
+RENAMED_HEADERS_MAP = renamed_headers_map()
 
-
-HOMOGENIZED_HEADERS = ["year","pct","ser_num","datestop","timestop","recstat","inout",
-                "trhsloc","perobs","crimsusp","perstop","typeofid","explnstp","othpers",
-                "arstmade","arstoffn","sumissue","sumoffen","compyear","comppct","offunif",
-                "officrid","frisked","searched","contrabn","adtlrept","pistol","riflshot",
-                "asltweap","knifcuti","machgun","othrweap","pf_hands","pf_wall","pf_grnd",
-                "pf_drwep","pf_ptwep","pf_baton","pf_hcuff","pf_pepsp","pf_other","radio",
-                "ac_rept","ac_inves","rf_vcrim","rf_othsw","ac_proxm","rf_attir","cs_objcs",
-                "cs_descr","cs_casng","cs_lkout","rf_vcact","cs_cloth","cs_drgtr","ac_evasv",
-                "ac_assoc","cs_furtv","rf_rfcmp","ac_cgdir","rf_verbl","cs_vcrim","cs_bulge",
-                "cs_other","ac_incid","ac_time","rf_knowl","ac_stsnd","ac_other","sb_hdobj",
-                "sb_outln","sb_admis","sb_other","repcmd","revcmd","rf_furt","rf_bulg",
-                "offverb","offshld","forceuse","sex","race","dob","age","ht_feet","ht_inch",
-                "weight","haircolr","eyecolor","build","othfeatr","addrtyp","rescode","premtype",
-                "premname","addrnum","stname","stinter","crossst","aptnum","city","state","zip",
-                "addrpct","sector","beat","post","xcoord","ycoord","dettypcm","linecm","detailcm",
-            ]
+RENAMED_HEADERS = [RENAMED_HEADERS_MAP[h] if RENAMED_HEADERS_MAP.get(h) else h for h in HOMOGENIZED_HEADERS]
 
 
 def fix_2006_format(row):
@@ -40,28 +35,41 @@ def fix_2006_format(row):
     nrow['linecm'] = "" # is there really no linecm?
     return nrow
 
-def homogonize_row(row, year_format):
+def homogenize_row(row, year_format):
+    """
+    Returns a dict with values or blanks for all keys in HOMOGENIZED_HEADERS
+    Whitespace is stripped
+    """
     if year_format == 2006:
         row = fix_2006_format(row)
     # not all years have forceuse
     row['forceuse'] = row.get('forceuse') or ''
     return {h: row[h].strip() for h in HOMOGENIZED_HEADERS}
 
-
-
+def rename_headers(row):
+    """returns nothing, alters row"""
+    for header, alias in RENAMED_HEADERS_MAP.items():
+        row[alias] = row[header]
 
 if __name__ == '__main__':
-    if len(argv) != 2:
-        raise IOError("Expects exactly one argument: name of file to be parsed.")
+    parser = argparse.ArgumentParser("Homogenize data format and rename headers for clarity")
+    parser.add_argument('infile', type=argparse.FileType('r', encoding='windows-1252'), help='file to read from')
+    parser.add_argument('year', type=str, help='Explicitly state the year of the file')
+    args = parser.parse_args()
+    infile = args.infile
+    year = args.year
 
-    src_path = argv[1]
-    year = int(re.search(r'\d{4}(?=\.csv)', src_path).group())
-    with open(src_path, "r", encoding='windows-1252') as src_file:
-        # read in first line, convert to lower-case headers for less headaches
-        inputheaders = src_file.readline().strip().lower().split(',')
+    LOGGY.info("Reading from %s" % infile.name)
+    LOGGY.info("Formatting it based on specs for %s" % year)
 
-        csvout = DictWriter(stdout, fieldnames=HOMOGENIZED_HEADERS)
-        csvout.writeheader()
-        for row in DictReader(src_file, fieldnames=inputheaders):
-            hrow = homogonize_row(row, year_format=year)
-            csvout.writerow(hrow)
+    # read in first line, convert to lower-case headers for less headaches
+    inputheaders = infile.readline().strip().lower().split(',')
+    csvin = DictReader(infile, fieldnames=inputheaders)
+
+    csvout = DictWriter(stdout, fieldnames=RENAMED_HEADERS, extrasaction='ignore')
+    csvout.writeheader()
+
+    for r in csvin:
+        row = homogenize_row(r, year_format=year)
+        rename_headers(row)
+        csvout.writerow(row)
