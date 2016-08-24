@@ -1,0 +1,44 @@
+title: NYPD Stop and Frisk
+
+
+
+  fields:
+    - name: ac_assocation_with_criminals
+      enumerables: [Y,N,""]
+
+
+    - name: ac_changed_direction
+      enumerables: [Y,N,""]
+
+
+    - name: ac_evasive_to_questions
+      enumerables: [Y,N,""]
+
+
+    - name: ac_high_crime_area
+      enumerables: [Y,N,""]
+
+
+    - name: ac_ongoing_investigation
+      enumerables: [Y,N,""]
+
+
+    - name: ac_other
+      enumerables: [Y,N,""]
+
+
+    - name: ac_proximity_to_scene
+      enumerables: [Y,N,""]
+
+
+    - name: ac_reported_by_person
+      enumerables: [Y,N,""]
+
+
+    - name: ac_sights_sounds
+      enumerables: [Y,N,""]
+
+
+    - name: ac_time_of_day
+      enumerables: [Y,N,""]
+

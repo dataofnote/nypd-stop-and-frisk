@@ -1,5 +1,5 @@
 ac_assoc,ac_assocation_with_criminals
-ac_cgdir,ac_changeed_direction
+ac_cgdir,ac_changed_direction
 ac_evasv,ac_evasive_to_questions
 ac_incid,ac_high_crime_area
 ac_inves,ac_ongoing_investigation
@@ -15,7 +15,7 @@ age,suspect_age
 aptnum,loc_apt_number
 arstmade,arrest_made
 arstoffn,arrest_offense
-asltweap,assault_weapon
+asltweap,found_assault_weapon
 beat,loc_beat
 build,suspect_build
 city,loc_city

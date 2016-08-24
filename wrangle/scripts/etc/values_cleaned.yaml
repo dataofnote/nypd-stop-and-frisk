@@ -1,0 +1,159 @@
+ac_assocation_with_criminals:
+  map:
+    '1' : 'Y'
+
+ac_changed_direction:
+  map:
+    '1' : 'Y'
+
+ac_evasive_to_questions:
+  map:
+    '1' : 'Y'
+
+ac_high_crime_area:
+  map:
+    '1' : 'Y'
+
+ac_ongoing_investigation:
+  map:
+    '1' : 'Y'
+
+ac_other:
+  map:
+    '1' : 'Y'
+
+ac_proximity_to_scene:
+  map:
+    '1' : 'Y'
+
+ac_reported_by_person:
+  map:
+    '1' : 'Y'
+
+ac_sights_sounds:
+  map:
+    '1' : 'Y'
+
+ac_time_of_day:
+  map:
+    '1' : 'Y'
+    '0' : 'N'
+
+additional_details:
+  map:
+    '1' : 'Y'
+    '0' : 'N'
+
+additional_reports:
+  map:
+    '1' : 'Y'
+    '0' : 'N'
+
+arrest_made:
+  map:
+    '1' : 'Y'
+    '0' : 'N'
+
+# arrest_offense
+# complaint_precinct
+# complaint_year
+
+
+
+
+# crime_code_description
+# crime_suspected
+# cs_bulge
+# cs_casing
+# cs_clothing
+# cs_drug_transaction_suspected
+# cs_fit_description
+# cs_furtive_movements
+# cs_lookout
+# cs_other
+# cs_suspicious_object
+# cs_violent_crime_suspected
+# datestop
+# details_types_code
+# forceuse_reason
+# found_assault_weapon
+# found_contraband
+# found_knife
+# found_machine_gun
+# found_other_weapon
+# found_pistol
+# found_rifle
+# frisked
+# loc_address_number
+# loc_address_precinct
+# loc_address_type
+# loc_apt_number
+# loc_beat
+# loc_city
+# loc_cross_street
+# loc_housing_or_transit_authority
+# loc_inside_outside
+# loc_intersection
+# loc_post
+# loc_precinct
+# loc_premise_name
+# loc_premise_type
+# loc_resident_code
+# loc_sector
+# loc_state
+# loc_street_name
+# loc_zip
+# officer_explained_stop
+# officer_id_card
+# officer_shield
+# officer_uniformed
+# officer_verbal_statement
+# other_persons_stopped
+# period_of_observation
+# period_of_stop
+# pf_baton
+# pf_ground
+# pf_handcuffed
+# pf_hands
+# pf_other
+# pf_pepsp
+# pf_wall
+# pf_weapon_drawn
+# pf_weapon_pointed
+# radio
+# record_status
+# reporting_officer_command
+# reviewing_officer_command
+# rf_bulge
+# rf_furtive_movements
+# rf_other_suspicion_of_weapons
+# rf_out_of_season_attire
+# rf_prior_knowledge
+# rf_refused_to_comply
+# rf_verbal_threats
+# rf_violent_crime_actions
+# rf_violent_crime_suspected
+# sb_admission_by_suspect
+# sb_hard_object
+# sb_other
+# sb_outline_of_weapon
+# searched
+# summons_issued
+# summons_offense
+# suspect_age
+# suspect_build
+# suspect_dob
+# suspect_eye_color
+# suspect_hair_color
+# suspect_height_feet
+# suspect_height_inches
+# suspect_other_features
+# suspect_race
+# suspect_sex
+# suspect_type_of_id
+# suspect_weight
+# timestop
+# ucb_serialnum
+# xcoord
+# ycoord
+# year

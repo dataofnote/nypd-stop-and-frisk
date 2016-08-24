@@ -1,47 +1,74 @@
-#!/usr/bin/env python
-# COMPLETE_HEADERS = HOMOGENIZED_HEADERS + ['datetime_stop', 'was_force_used',
-#                                           'longitude', 'latitude']
+"""
+Standardizes values for each column according to spec.
+Expects columns to have been renamed via homogenize.py
+"""
 
-from signal import signal, SIGPIPE, SIG_DFL
-signal(SIGPIPE,SIG_DFL)
-
+from pathlib import Path
 
 import argparse
-import cleaning_utils
 from csv import DictReader, DictWriter
-from homogenize import HOMOGENIZED_HEADERS
 from loggy import loggy
+from settings import homogenized_headers, cleaning_spec
 from sys import stdout
+import yaml
 
-LOGGY = loggy("clean")
-
-
+LOGGY = loggy('clean')
+HOMOGENIZED_HEADERS = homogenized_headers()
+CLEANING_SPEC = cleaning_spec()
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser("Clean input file with specified cleaning utils")
-    parser.add_argument('infile', type=argparse.FileType('r'))
-    parser.add_argument('cleaner', type=str)
+    parser = argparse.ArgumentParser("Clean data values according to etc/ spec")
+    parser.add_argument('infile', type=argparse.FileType('r'), help='file to read from')
     args = parser.parse_args()
-    cleaner_name = args.cleaner
-    infile = args.cleaner
+    infile = args.infile
 
-    fooclean = getattr(cleaning_utils, cleaner_name)
-    fooheaders = cleaning_utils.DERIVED_HEADERS[cleaner_name]
-    cleaned_headers = HOMOGENIZED_HEADERS + list(fooheaders)
+    LOGGY.info("Reading from %s" % infile.name)
 
-
-    # todo TK: shouldn't rely on first line of headers
-    LOGGY.info('Reading from %s' % infile)
-    csvin = DictReader(args.infile, fieldnames=HOMOGENIZED_HEADERS)
-
-    csvout = DictWriter(stdout, extrasaction='ignore', fieldnames=cleaned_headers)
+    # headers should not be different from HOMOGENIZED_HEADERS
+    csvout = DictWriter(stdout, fieldnames=HOMOGENIZED_HEADERS)
     csvout.writeheader()
 
-    _headerrow = sorted(HOMOGENIZED_HEADERS)
-    for row in csvin:
-        if sorted(row.values()) == _headerrow:
-            pass
-        else:
-            new_attrs = fooclean(row)
-            row.update(new_attrs)
-            csvout.writerow(row)
+    for i, row in enumerate(DictReader(infile)):
+        for header, meta in CLEANING_SPEC.items():
+            cx = meta['map']
+            val = row[header]
+            if cx.get(val):
+                LOGGY.info("{linenum}\t{header}\t{bad}\t{good}".format(linenum=i, header=header, bad=val, good=cx[val]))
+                row[header] = cx[val]
+        # all done with cleaning this row
+        csvout.writerow(row)
+
+
+
+# HEADERS_TO_RENAME = {
+
+
+# }
+
+
+# # columns relating to use of force
+# USE_OF_FORCE_HEADERS = ['pf_hands', 'pf_wall', 'pf_grnd', 'pf_drwep', 'pf_ptwep', 'pf_baton', 'pf_hcuff', 'pf_pepsp', 'pf_other']
+
+# # columns relating to whether a gun was found
+# GUN_FOUND_HEADERS = ['assault_weapon', 'machine_gun', 'pistol', 'rifle']
+
+# # guns + knives + other
+# WEAPON_FOUND_HEADERS = GUN_FOUND_HEADERS + ['knifcuti', 'othrweap']
+
+# # additional circumstances
+# ADDITIONAL_CIRCUMSTANCE_HEADERS = [,]
+
+
+# # columns for which answer is expected to be Y or N
+# YES_OR_NO_HEADERS = ADDITIONAL_CIRCUMSTANCE_HEADERS \
+#     + USE_OF_FORCE_HEADERS \
+#     + WEAPON_FOUND_HEADERS + [
+#         'arrest_made',
+#         'contrabn',
+#         'frisked',
+#         'searched',
+#         'sumissue',]
+
+
+#     # renaming things for clarity
+

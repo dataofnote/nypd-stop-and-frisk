@@ -2,23 +2,24 @@
 """
 Makes sure all files follow the same schema, including older years
 that don't have the columns from newer years (values are left blank)
+
+Headers are renamed according to etc/headers_renamed.csv
 """
 
 import argparse
 from copy import copy
 from csv import DictReader, DictWriter
 from loggy import loggy
-from settings import homogenized_headers, renamed_headers_map
+from settings import homogenized_headers, normalized_headers, renamed_headers_map
 import re
-from sys import argv, stdout
+from sys import stdout
 
 LOGGY = loggy('homogenize')
 
-
 HOMOGENIZED_HEADERS = homogenized_headers()
+NORMALIZED_HEADERS = normalized_headers()
 RENAMED_HEADERS_MAP = renamed_headers_map()
 
-RENAMED_HEADERS = [RENAMED_HEADERS_MAP[h] if RENAMED_HEADERS_MAP.get(h) else h for h in HOMOGENIZED_HEADERS]
 
 
 def fix_2006_format(row):
@@ -35,16 +36,23 @@ def fix_2006_format(row):
     nrow['linecm'] = "" # is there really no linecm?
     return nrow
 
+
 def homogenize_row(row, year_format):
+    nrow = normalize_row(row, year_format)
+    rename_headers(nrow)
+    return nrow
+
+
+def normalize_row(row, year_format):
     """
-    Returns a dict with values or blanks for all keys in HOMOGENIZED_HEADERS
+    Returns a dict with values or blanks for all keys in NORMALIZED_HEADERS
     Whitespace is stripped
     """
     if year_format == 2006:
         row = fix_2006_format(row)
     # not all years have forceuse
     row['forceuse'] = row.get('forceuse') or ''
-    return {h: row[h].strip() for h in HOMOGENIZED_HEADERS}
+    return {h: row[h].strip() for h in NORMALIZED_HEADERS}
 
 def rename_headers(row):
     """returns nothing, alters row"""
@@ -52,9 +60,9 @@ def rename_headers(row):
         row[alias] = row[header]
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser("Homogenize data format and rename headers for clarity")
+    parser = argparse.ArgumentParser("Homogenize data format and headers for clarity")
     parser.add_argument('infile', type=argparse.FileType('r', encoding='windows-1252'), help='file to read from')
-    parser.add_argument('year', type=str, help='Explicitly state the year of the file')
+    parser.add_argument('year', type=int, help='Explicitly state the year of the file')
     args = parser.parse_args()
     infile = args.infile
     year = args.year
@@ -66,10 +74,9 @@ if __name__ == '__main__':
     inputheaders = infile.readline().strip().lower().split(',')
     csvin = DictReader(infile, fieldnames=inputheaders)
 
-    csvout = DictWriter(stdout, fieldnames=RENAMED_HEADERS, extrasaction='ignore')
+    csvout = DictWriter(stdout, fieldnames=HOMOGENIZED_HEADERS, extrasaction='ignore')
     csvout.writeheader()
 
     for r in csvin:
         row = homogenize_row(r, year_format=year)
-        rename_headers(row)
         csvout.writerow(row)
