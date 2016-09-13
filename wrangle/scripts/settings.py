@@ -9,6 +9,7 @@ RENAMED_HEADERS_PATH = ETC_PATH / 'headers_renamed.csv'
 DERIVED_HEADERS_PATH = ETC_PATH / 'headers_derived.txt'
 YESNO_COLUMNS_PATH = ETC_PATH / 'yesno_columns.txt'
 FORCE_USED_HEADERS_PATH = ETC_PATH / 'headers_force_used.txt'
+WEAPON_FOUND_HEADERS_PATH = ETC_PATH / 'headers_weapon_found.txt'
 
 
 # def cleaning_spec():
@@ -39,3 +40,11 @@ def force_used_headers():
     these headers are ranked in order from most serious/rarest (e.g. weapon_pointed) to least (e.g. other, hands)
     """
     return [s.strip() for s in FORCE_USED_HEADERS_PATH.read_text().splitlines()]
+
+
+
+def weapon_found_headers():
+    """
+    these headers are ranked in order from most serious/rarest (e.g. weapon_pointed) to least (e.g. other, hands)
+    """
+    return [s.strip() for s in WEAPON_FOUND_HEADERS_PATH.read_text().splitlines()]

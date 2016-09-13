@@ -1,0 +1,6 @@
+found_machine_gun 
+found_assault_weapon 
+found_rifle
+found_pistol 
+found_other_weapon 
+found_knife 

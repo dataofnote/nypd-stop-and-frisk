@@ -40,7 +40,7 @@ end
 
 desc "Clean up the fields, derive proper values"
 task :compile => :setup do
-    C_FILES.each{|fn| Rake::Task[fn].invoke() }
+    C_FILES.each{|fn| Rake::Task[fn].execute() }
 end
 
 
@@ -54,6 +54,7 @@ C_FILES.each do |destname|
                   srcname,
                   'derive_yesno',
                   'derive_force_type_used',
+                  'derive_weapon_type_found',
                   'derive_latlng',
                   'derive_datetime_stop',
                   '>', destname]

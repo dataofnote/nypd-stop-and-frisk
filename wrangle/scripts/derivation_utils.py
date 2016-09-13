@@ -1,5 +1,5 @@
 from pathlib import Path
-from settings import derived_headers, yesno_columns, force_used_headers
+from settings import derived_headers, yesno_columns, force_used_headers, weapon_found_headers
 import pyproj
 NYSP1983_PROJ = pyproj.Proj(init="ESRI:102718", preserve_units=True)
 
@@ -13,9 +13,12 @@ NYSP1983_PROJ = pyproj.Proj(init="ESRI:102718", preserve_units=True)
 # }
 
 
-FORCE_USED_HEADERS = force_used_headers()
+
 DERIVED_HEADERS = derived_headers()
 YESNO_COLUMNS = yesno_columns()
+FORCE_USED_HEADERS = force_used_headers()
+WEAPON_FOUND_HEADERS = weapon_found_headers()
+
 
 def derive_datetime_stop(datarow):
     """
@@ -31,7 +34,7 @@ def derive_datetime_stop(datarow):
     e.g.
     7042014,318 => 2014-07-04 03:18
     """
-
+    warnings = None
     datestop = datarow['datestop']
     timestop = datarow['timestop']
 
@@ -51,7 +54,7 @@ def derive_datetime_stop(datarow):
     dx = datestop.rjust(8, '0')
     cleaned_date = '{yr}-{mth}-{day}'.format(yr=dx[-4:], mth=dx[0:2], day=dx[2:4])
 
-    return {'datetime_stop': "{0} {1}".format(cleaned_date, cleaned_time)}
+    return ({'datetime_stop': "{0} {1}".format(cleaned_date, cleaned_time)}, warnings)
 
 
 
@@ -65,18 +68,39 @@ def derive_force_type_used(row):
 
     Note: probably should run derive_yesno to normalize this to Y or N...
     """
+    warnings = None
     forcetype = next((c.split('_', 1)[1] for c in FORCE_USED_HEADERS if row[c] == 'Y'), None)
-    return {'force_type_used': forcetype}
+
+    return ({'force_type_used': forcetype}, warnings)
+
+def derive_weapon_type_found(row):
+    """
+    The WEAPON_FOUND_HEADERS is a list in descending order of serious, starting
+    with "found_machine_gun" to "found_knife".
+
+    "found_contraband is ignored"
+
+    This function returns the most serious/rarest type of force, e.g. "machine_gun"
+    that has a 'Y' in the column. Else None is returned
+
+    Note: probably should run derive_yesno to normalize this to Y or N...
+    """
+    warnings = None
+    w = next((c.split('_', 1)[1] for c in WEAPON_FOUND_HEADERS if row[c] == 'Y'), None)
+
+    return ({'weapon_type_found': w}, warnings)
 
 
 def derive_latlng(row):
+    warnings = None
     if row['xcoord'] and row['ycoord']:
         lnglat = NYSP1983_PROJ(int(row['xcoord']),
                                int(row['ycoord']),
                                inverse=True)
-        return dict(zip(['longitude', 'latitude'], [round(c, 5) for c in lnglat]))
+        d = dict(zip(['longitude', 'latitude'], [round(c, 5) for c in lnglat]))
     else:
-        return {'longitude': None, 'latitude': None}
+        d = {'longitude': None, 'latitude': None}
+    return (d, warnings)
 
 def derive_yesno(row):
     """helper method to normalize Y/N/'' columns
@@ -84,6 +108,7 @@ def derive_yesno(row):
     Returns: str; 'Y' or 'N'; blanks are removed
     """
     d = {}
+    warnings = None
     for h in YESNO_COLUMNS:
         val = row[h].upper()
         if val in ['Y', '1']:
@@ -93,6 +118,7 @@ def derive_yesno(row):
         elif not val:
             d[h] = ""
         else:
-            raise ValueError("Column %s had an unexpected value of %s" % (h, row[h]))
-    return d
+            d[h] = row[h]
+            warnings = "Column %s had an unexpected value of %s" % (h, row[h])
+    return (d, warnings)
 

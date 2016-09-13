@@ -34,7 +34,9 @@ if __name__ == '__main__':
 
     derivers = [getattr(derivation_utils, dn) for dn in derivation_names]
     for row in csvin:
-        for drfoo in derivers:
-            new_attrs = drfoo(row)
+        for derivefoo in derivers:
+            new_attrs, warnings = derivefoo(row)
+            if warnings:
+                LOGGY.warn(warnings)
             row.update(new_attrs)
         csvout.writerow(row)
