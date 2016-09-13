@@ -1,12 +1,11 @@
 require 'pathname'
-require 'shellwords'
-require 'shell'
 WRANGLE_DIR = Pathname 'wrangle'
-SCRIPTS_DIR = WRANGLE_DIR.join('scripts')
+CORRAL_DIR = WRANGLE_DIR / 'corral'
+SCRIPTS_DIR = WRANGLE_DIR / 'scripts'
 
 DIRS = {
-    :fetched => WRANGLE_DIR.join('corral', 'fetched'),
-    :homogenized => WRANGLE_DIR.join('corral', 'homogenized'),
+    :fetched => CORRAL_DIR / 'fetched',
+    :homogenized => CORRAL_DIR / 'homogenized',
     :published =>  Pathname('data'),
 }
 
@@ -14,8 +13,8 @@ START_YEAR = 2003
 END_YEAR = 2015 # data is updated on an annual basis, so this file
                 # can be manually edited
 
-FETCHED_DATAFILES = (START_YEAR..END_YEAR).map{|y| DIRS[:fetched].join("#{y}.csv") }
-HOMOGENIZED_DATAFILES = FETCHED_DATAFILES.map{|p| DIRS[:homogenized].join(p.basename)}
+F_FILES = (START_YEAR..END_YEAR).map{|y| DIRS[:fetched].join("#{y}.csv") }
+H_FILES = F_FILES.map{|p| DIRS[:homogenized] / p.basename }
 
 desc 'Setup the directories'
 task :setup do
@@ -26,37 +25,41 @@ task :setup do
 end
 
 
-namespace :package do
+namespace :publish do
     desc "Fetch all yearly CSV files."
     task :fetch do
-        FETCHED_DATAFILES.each{|fn| Rake::Task[fn].invoke() }
+        F_FILES.each{|fn| Rake::Task[fn].invoke() }
     end
 
     desc "Homogenized the fetched yearly CSV files"
-    task :homogenize do
-        HOMOGENIZED_DATAFILES.each{|fn| Rake::Task[fn].invoke() }
+    task :homogenize => :setup do
+        H_FILES.each{|fn| Rake::Task[fn].invoke() }
     end
 end
 
 
 ## File listing
-HOMOGENIZED_DATAFILES.each do |destname|
-    srcname = DIRS[:fetched].join(destname.basename)
+H_FILES.each do |destname|
+    srcname = DIRS[:fetched] / destname.basename
     desc "#{destname.basename} CSV file with homogenized headers"
     file destname => srcname do
-        cmdstr = ['python', SCRIPTS_DIR.join('homogenize.py'), srcname]
-        Shell.new.system(Shellwords.join(cmdstr)) > destname.to_s
+        year = destname.basename.to_s[/\d{4}/]
+        cmd = ['python', SCRIPTS_DIR.join('homogenize.py'),
+                  srcname, year, '>', destname]
+        sh cmd.join(' ')
     end
 end
 
 
 
-FETCHED_DATAFILES.each do |yname|
-    desc "#{yname.basename} text file as fetched and extracted from nyc.gov"
-    file yname do
-        year = yname.basename.to_s[/\d{4}/]
-        cmdstr = ['bash', SCRIPTS_DIR.join('fetch_and_unpack.sh'), year]
-        Shell.new.system(Shellwords.join(cmdstr)) > yname.to_s
+F_FILES.each do |fname|
+    desc "#{fname.basename} text file as fetched and extracted from nyc.gov"
+    file fname do
+        year = fname.basename.to_s[/\d{4}/]
+        cmd = ['bash', SCRIPTS_DIR.join('fetch_and_unpack.sh'),
+                year, '>', fname]
+
+        sh cmd.join(' ')
     end
 end
 
