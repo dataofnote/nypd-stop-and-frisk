@@ -31,7 +31,7 @@ namespace :publish do
         F_FILES.each{|fn| Rake::Task[fn].invoke() }
     end
 
-    desc "Homogenized the fetched yearly CSV files"
+    desc "Homogenize the fetched yearly CSV files"
     task :homogenize => :setup do
         H_FILES.each{|fn| Rake::Task[fn].invoke() }
     end

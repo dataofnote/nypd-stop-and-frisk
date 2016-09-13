@@ -1,17 +1,21 @@
-
+from pathlib import Path
+from settings import derived_headers, yesno_columns, force_used_headers
 import pyproj
 NYSP1983_PROJ = pyproj.Proj(init="ESRI:102718", preserve_units=True)
 
-DERIVED_HEADERS = {
-    'derive_datetime_stop': ('datetime_stop',),
-    'derive_use_of_force': ('force_used',),
-    'derive_latlng': ('longitude', 'latitude',),
-    'derive_yesno': (),
-}
+
+# these represent new column headers that are created
+# DERIVED_HEADERS = {
+#     'derive_datetime_stop': ('datetime_stop',),
+#     'derive_use_of_force': ('force_used',),
+#     'derive_latlng': ('longitude', 'latitude',),
+#     'derive_yesno': (),
+# }
 
 
-
-
+FORCE_USED_HEADERS = force_used_headers()
+DERIVED_HEADERS = derived_headers()
+YESNO_COLUMNS = yesno_columns()
 
 def derive_datetime_stop(datarow):
     """
@@ -51,15 +55,18 @@ def derive_datetime_stop(datarow):
 
 
 
-def derive_use_of_force(row):
+def derive_force_type_used(row):
     """
-    Returns 'Y' if any of the row's values for force-related attributes is 'Y';
-    otherwise, returns 'N'
+    The FORCE_USED_HEADERS is a list in descending order of serious, starting
+    with "pf_weapon_pointed" to "pf_hands"
+
+    This function returns the most serious/rarest type of force, e.g. "weapon_pointed"
+    that has a 'Y' in the column. Else None is returned
 
     Note: probably should run derive_yesno to normalize this to Y or N...
     """
-    fd = next((row[c] for c in USE_OF_FORCE_HEADERS if row[c] == 'Y'), 'N')
-    return {'force_used': fd}
+    forcetype = next((c.split('_', 1)[1] for c in FORCE_USED_HEADERS if row[c] == 'Y'), None)
+    return {'force_type_used': forcetype}
 
 
 def derive_latlng(row):
@@ -72,12 +79,20 @@ def derive_latlng(row):
         return {'longitude': None, 'latitude': None}
 
 def derive_yesno(row):
-    pass
-
-
-def _yesno(val):
     """helper method to normalize Y/N/'' columns
     `val`: str; expected to be y,n,(None),Y,N
     Returns: str; 'Y' or 'N'; blanks are removed
     """
-    return 'Y' if v == 'Y' else 'N'
+    d = {}
+    for h in YESNO_COLUMNS:
+        val = row[h].upper()
+        if val in ['Y', '1']:
+            d[h] = 'Y'
+        elif val in ['N', '0']:
+            d[h] = 'N'
+        elif not val:
+            d[h] = ""
+        else:
+            raise ValueError("Column %s had an unexpected value of %s" % (h, row[h]))
+    return d
+

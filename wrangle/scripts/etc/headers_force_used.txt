@@ -1,0 +1,9 @@
+pf_weapon_pointed
+pf_weapon_drawn
+pf_baton
+pf_pepsp
+pf_ground
+pf_wall
+pf_handcuffed
+pf_other
+pf_hands

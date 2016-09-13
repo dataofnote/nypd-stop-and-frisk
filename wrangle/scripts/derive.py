@@ -5,8 +5,9 @@
 
 
 import argparse
-import cleaning_utils
 from csv import DictReader, DictWriter
+import derivation_utils
+from derivation_utils import DERIVED_HEADERS
 from homogenize import HOMOGENIZED_HEADERS
 from loggy import loggy
 from sys import stdout
@@ -18,28 +19,22 @@ LOGGY = loggy("clean")
 if __name__ == '__main__':
     parser = argparse.ArgumentParser("Clean input file with specified cleaning utils")
     parser.add_argument('infile', type=argparse.FileType('r'))
-    parser.add_argument('cleaner', type=str)
+    parser.add_argument('derivations', type=str, nargs='*')
     args = parser.parse_args()
-    cleaner_name = args.cleaner
-    infile = args.cleaner
+    infile = args.infile
+    derivation_names = args.derivations
+    LOGGY.info('Running derivations: %s' % derivation_names)
 
-    fooclean = getattr(cleaning_utils, cleaner_name)
-    fooheaders = cleaning_utils.DERIVED_HEADERS[cleaner_name]
-    cleaned_headers = HOMOGENIZED_HEADERS + list(fooheaders)
-
-
-    # todo TK: shouldn't rely on first line of headers
     LOGGY.info('Reading from %s' % infile)
-    csvin = DictReader(args.infile, fieldnames=HOMOGENIZED_HEADERS)
+    csvin = DictReader(args.infile)
 
-    csvout = DictWriter(stdout, extrasaction='ignore', fieldnames=cleaned_headers)
+    out_headers = HOMOGENIZED_HEADERS + DERIVED_HEADERS
+    csvout = DictWriter(stdout, extrasaction='ignore', fieldnames=out_headers)
     csvout.writeheader()
 
-    _headerrow = sorted(HOMOGENIZED_HEADERS)
+    derivers = [getattr(derivation_utils, dn) for dn in derivation_names]
     for row in csvin:
-        if sorted(row.values()) == _headerrow:
-            pass
-        else:
-            new_attrs = fooclean(row)
+        for drfoo in derivers:
+            new_attrs = drfoo(row)
             row.update(new_attrs)
-            csvout.writerow(row)
+        csvout.writerow(row)

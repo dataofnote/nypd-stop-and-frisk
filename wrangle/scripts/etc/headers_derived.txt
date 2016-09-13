@@ -1,0 +1,4 @@
+datetime_stop
+force_type_used
+longitude
+latitude
