@@ -1,63 +1,75 @@
+# investigate nans
+
 - name: ac_assocation_with_criminals
   type: string
-  length: 1
+  length: 3
   enumerations:
   - N
   - Y
+  - nan
 - name: ac_changed_direction
   type: string
-  length: 1
+  length: 3
   enumerations:
   - N
   - Y
+  - nan
 - name: ac_evasive_to_questions
   type: string
-  length: 1
+  length: 3
   enumerations:
   - N
   - Y
+  - nan
 - name: ac_high_crime_area
   type: string
-  length: 1
+  length: 3
   enumerations:
   - N
   - Y
+  - nan
 - name: ac_ongoing_investigation
   type: string
-  length: 1
+  length: 3
   enumerations:
   - N
   - Y
+  - nan
 - name: ac_other
   type: string
-  length: 1
+  length: 3
   enumerations:
   - N
   - Y
+  - nan
 - name: ac_proximity_to_scene
   type: string
-  length: 1
+  length: 3
   enumerations:
   - N
   - Y
+  - nan
 - name: ac_reported_by_person
   type: string
-  length: 1
+  length: 3
   enumerations:
   - N
   - Y
+  - nan
 - name: ac_sights_sounds
   type: string
-  length: 1
+  length: 3
   enumerations:
   - N
   - Y
+  - nan
 - name: ac_time_of_day
   type: string
-  length: 1
+  length: 3
   enumerations:
   - N
   - Y
+  - nan
 - name: additional_details
   type: float
   has_nulls: true
@@ -69,34 +81,43 @@
   - 1.0
 - name: additional_reports
   type: string
-  length: 1
-  enumerations:
-  - N
-- name: arrest_made
-  type: string
-  length: 1
+  length: 3
   enumerations:
   - N
   - Y
+  - nan
+- name: arrest_made
+  type: string
+  length: 3
+  enumerations:
+  - N
+  - Y
+  - nan
 - name: arrest_offense
   type: string
   length: 30
   examples:
-  - C
-  - D
-  - FLEE OFFICE
-  - TAMPERING W/ PHYSICAL EVIDENCE
-  - CRIMINAL POSS.FORGED INSTRUMEN
+  - X
+  - I
+  - BY PO VARGAS
+  - OPEN CONTAINER/ ACTIVE WARRENT
+  - THEFT OF SERVICE, CRIMINAL TRE
 - name: complaint_precinct
-  type: integer
-  length: 0
+  type: float
+  has_nulls: true
+  length:
+  - 2
+  - 1
   enumerations:
-  - 0
+  - 0.0
 - name: complaint_year
-  type: integer
-  length: 0
+  type: float
+  has_nulls: true
+  length:
+  - 2
+  - 1
   enumerations:
-  - 0
+  - 0.0
 - name: crime_code_description
   type: float
   has_nulls: true
@@ -106,82 +127,93 @@
   examples:
   - 1.0
   - 113.0
-  - 40.0
+  - 61.0
 - name: crime_suspected
   type: string
   length: 30
   examples:
   - F
   - M
-  - 'MISD   PSA #2920'
-  - ENDANGERING WELFARE OF A CHILD
-  - CRIMINAL MISCHIEF/GRAND LARCEN
+  - CPW MISD PSA#1900
+  - FALSE REPORTING OF POLICE INCI
+  - UNAUTHORIZED SALE OF LARC 105.
 - name: cs_bulge
   type: string
-  length: 1
+  length: 3
   enumerations:
   - N
   - Y
+  - nan
 - name: cs_casing
   type: string
-  length: 1
+  length: 3
   enumerations:
   - N
   - Y
+  - nan
 - name: cs_clothing
   type: string
-  length: 1
+  length: 3
   enumerations:
   - N
   - Y
+  - nan
 - name: cs_drug_transaction_suspected
   type: string
-  length: 1
+  length: 3
   enumerations:
   - N
   - Y
+  - nan
 - name: cs_fit_description
   type: string
-  length: 1
+  length: 3
   enumerations:
   - N
   - Y
+  - nan
 - name: cs_furtive_movements
   type: string
-  length: 1
+  length: 3
   enumerations:
   - N
   - Y
+  - nan
 - name: cs_lookout
   type: string
-  length: 1
+  length: 3
   enumerations:
   - N
   - Y
+  - nan
 - name: cs_other
   type: string
-  length: 1
+  length: 3
   enumerations:
   - N
   - Y
+  - nan
 - name: cs_suspicious_object
   type: string
-  length: 1
+  length: 3
   enumerations:
   - N
   - Y
+  - nan
 - name: cs_violent_crime_suspected
   type: string
-  length: 1
+  length: 3
   enumerations:
   - N
   - Y
+  - nan
 - name: datestop
   type: date
+  has_nulls: true
   examples:
-  - 1012012
-  - 12312013
-  - 11092012
+  - 2112011
+  - 7172012
+  - '11012007'
 - name: details_types_code
   type: string
   length: 3
@@ -201,46 +233,53 @@
   - nan
 - name: found_assault_weapon
   type: string
-  length: 1
+  length: 3
   enumerations:
   - N
   - Y
+  - nan
 - name: found_contraband
   type: string
-  length: 1
+  length: 3
   enumerations:
   - N
   - Y
+  - nan
 - name: found_knife
   type: string
-  length: 1
+  length: 3
   enumerations:
   - N
   - Y
+  - nan
 - name: found_machine_gun
   type: string
-  length: 1
+  length: 3
   enumerations:
   - N
   - Y
+  - nan
 - name: found_other_weapon
   type: string
-  length: 1
+  length: 3
   enumerations:
   - N
   - Y
+  - nan
 - name: found_pistol
   type: string
-  length: 1
+  length: 3
   enumerations:
   - N
   - Y
+  - nan
 - name: found_rifle
   type: string
-  length: 1
+  length: 3
   enumerations:
   - N
   - Y
+  - nan
 - name: frisked
   type: string
   length: 1
@@ -249,13 +288,13 @@
   - Y
 - name: loc_address_number
   type: string
-  length: 6
+  length: 7
   examples:
   - '1'
   - '2'
-  - 230-1
-  - 115-37
-  - 144-32
+  - 10-49
+  - GOOLDEN
+  - MOTT AV
 - name: loc_address_precinct
   type: float
   has_nulls: true
@@ -265,25 +304,27 @@
   examples:
   - 1.0
   - 123.0
-  - 88.0
+  - 49.0
 - name: loc_address_type
   type: string
-  length: 1
+  length: 3
   enumerations:
+  - L
   - R
+  - nan
 - name: loc_apt_number
   type: float
   has_nulls: true
   enumerations: []
 - name: loc_beat
   type: string
-  length: 3
+  length: 4
   examples:
   - '*'
   - '9'
-  - '22'
-  - '33'
-  - nan
+  - '9.0'
+  - '31.0'
+  - '33.0'
 - name: loc_city
   type: string
   length: 13
@@ -297,61 +338,65 @@
   - nan
 - name: loc_cross_street
   type: string
-  length: 23
+  length: 32
   examples:
-  - '91'
-  - BE
-  - MORLEY AVENUE
-  - MANHATTAN COLLEGE PARKW
-  - PROSPECT PARK SOUTHWEST
+  - O
+  - K
+  - 3162 BAYVIEW
+  - BEHIND GRANTS TOMB NR TIEMANN PL
+  - JAMAICA AVENUE (RUFUS KING PARK)
 - name: loc_housing_or_transit_authority
   type: string
-  length: 1
+  length: 3
   enumerations:
   - H
   - P
   - T
+  - nan
 - name: loc_inside_outside
   type: string
-  length: 1
+  length: 3
   enumerations:
   - I
   - O
+  - nan
 - name: loc_intersection
   type: string
-  length: 23
+  length: 32
   examples:
-  - B
-  - '4'
-  - WRIGHT AVENUE
-  - WILLIAMSBURG STREET WES
-  - STATEN ISLAND RAPID TRA
+  - '8'
+  - '5'
+  - NORTH GTNST
+  - '"FLUSLING MEADOW PARK, PASSARELL'
+  - BOWLING GREEN SUBWAY N/BY 4 TNAZ
 - name: loc_post
+  type: string
+  length: 4
+  examples:
+  - '9'
+  - '8'
+  - nan
+  - '96.0'
+  - '97.0'
+- name: loc_precinct
   type: float
   has_nulls: true
   length:
-  - 3
+  - 4
   - 1
   examples:
   - 1.0
-  - 99.0
-  - 45.0
-- name: loc_precinct
-  type: integer
-  length: 2
-  examples:
-  - 1
-  - 123
-  - 88
+  - 999.0
+  - 71.0
 - name: loc_premise_name
   type: string
-  length: 24
+  length: 30
   examples:
-  - A
   - S
-  - PUBLIC PARK B
-  - RESTAURANT ( OLIVE GARDE
-  - LOBBY RESIDENTIAL BUILDI
+  - A
+  - SIDE STAIRWELL
+  - 79 STREET 'D' LINE SUBWAY STA.
+  - RIVERDALE TOWERS STREET CORNER
 - name: loc_premise_type
   type: float
   has_nulls: true
@@ -359,13 +404,17 @@
 - name: loc_resident_code
   type: float
   has_nulls: true
-  enumerations: []
+  length:
+  - 2
+  - 1
+  enumerations:
+  - 1.0
 - name: loc_sector
   type: string
   length: 3
   examples:
   - A
-  - B
+  - E
   - K
   - '5'
   - nan
@@ -375,13 +424,13 @@
   enumerations: []
 - name: loc_street_name
   type: string
-  length: 24
+  length: 32
   examples:
+  - '8'
   - '2'
-  - '77'
-  - HAMPTON STREET
-  - PROSPECT PARK SOUTH WEST
-  - FORT INDEPENDENCE STREET
+  - NEWARK AVENUE
+  - CORNER OF INTERVALE AVE/ E.163 S
+  - W. 42ND. ST. 8TH AVE. & 9TH AVE.
 - name: loc_zip
   type: float
   has_nulls: true
@@ -396,104 +445,127 @@
   type: string
   length: 3
   enumerations:
+  - '0'
   - I
+  - N
+  - Y
   - nan
 - name: officer_shield
   type: string
   length: 3
   enumerations:
+  - '0'
+  - N
   - S
+  - Y
   - nan
 - name: officer_uniformed
   type: string
-  length: 1
+  length: 3
   enumerations:
+  - M
   - N
   - Y
+  - nan
 - name: officer_verbal_statement
   type: string
   length: 3
   enumerations:
+  - '0'
+  - N
   - V
+  - Y
   - nan
 - name: other_persons_stopped
   type: string
-  length: 1
+  length: 3
   enumerations:
   - N
   - Y
+  - nan
 - name: period_of_observation
   type: float
+  has_nulls: true
+  unsigned: false
   length:
-  - 4
-  - 1
+  - 5
+  - 2
   examples:
-  - 0.0
-  - 955.0
-  - 51.0
+  - -30.0
+  - 999.0
+  - 355.0
 - name: period_of_stop
   type: string
-  length: 2
+  length: 5
   examples:
   - '5'
   - '2'
-  - '59'
-  - '93'
-  - '61'
+  - '102'
+  - '150.0'
+  - '180.0'
 - name: pf_baton
   type: string
-  length: 1
+  length: 3
   enumerations:
   - N
   - Y
+  - nan
 - name: pf_ground
   type: string
-  length: 1
+  length: 3
   enumerations:
   - N
   - Y
+  - nan
 - name: pf_handcuffed
   type: string
-  length: 1
+  length: 3
   enumerations:
   - N
   - Y
+  - nan
 - name: pf_hands
   type: string
-  length: 1
+  length: 3
   enumerations:
   - N
   - Y
+  - nan
 - name: pf_other
   type: string
-  length: 1
+  length: 3
   enumerations:
   - N
   - Y
+  - nan
 - name: pf_pepsp
   type: string
-  length: 1
+  length: 3
   enumerations:
   - N
   - Y
+  - nan
 - name: pf_wall
   type: string
-  length: 1
+  length: 3
   enumerations:
   - N
   - Y
+  - nan
 - name: pf_weapon_drawn
   type: string
-  length: 1
+  length: 3
   enumerations:
   - N
   - Y
+  - nan
 - name: pf_weapon_pointed
   type: string
-  length: 1
+  length: 3
   enumerations:
   - N
   - Y
+  - nan
 - name: radio
   type: string
   length: 1
@@ -502,105 +574,123 @@
   - Y
 - name: record_status
   type: string
-  length: 1
+  length: 3
   enumerations:
   - '1'
+  - '1.0'
+  - '9'
+  - '9.0'
   - A
+  - nan
 - name: reporting_officer_command
-  type: float
-  has_nulls: true
-  length:
-  - 4
-  - 1
+  type: string
+  length: 5
   examples:
-  - 1.0
-  - 985.0
-  - 537.0
+  - '9'
+  - '7'
+  - BA-4
+  - '550.0'
+  - '851.0'
 - name: reviewing_officer_command
-  type: integer
-  length: 3
+  type: string
+  length: 5
   examples:
-  - 1
-  - 879
-  - 401
+  - '9'
+  - '7'
+  - NNGU
+  - '858.0'
+  - '228.0'
 - name: rf_bulge
   type: string
-  length: 1
+  length: 3
   enumerations:
   - N
   - Y
+  - nan
 - name: rf_furtive_movements
   type: string
-  length: 1
+  length: 3
   enumerations:
   - N
   - Y
+  - nan
 - name: rf_other_suspicion_of_weapons
   type: string
-  length: 1
+  length: 3
   enumerations:
   - N
   - Y
+  - nan
 - name: rf_out_of_season_attire
   type: string
-  length: 1
+  length: 3
   enumerations:
   - N
   - Y
+  - nan
 - name: rf_prior_knowledge
   type: string
-  length: 1
+  length: 3
   enumerations:
   - N
   - Y
+  - nan
 - name: rf_refused_to_comply
   type: string
-  length: 1
+  length: 3
   enumerations:
   - N
   - Y
+  - nan
 - name: rf_verbal_threats
   type: string
-  length: 1
+  length: 3
   enumerations:
   - N
   - Y
+  - nan
 - name: rf_violent_crime_actions
   type: string
-  length: 1
+  length: 3
   enumerations:
   - N
   - Y
+  - nan
 - name: rf_violent_crime_suspected
   type: string
-  length: 1
+  length: 3
   enumerations:
   - N
   - Y
+  - nan
 - name: sb_admission_by_suspect
   type: string
-  length: 1
+  length: 3
   enumerations:
   - N
   - Y
+  - nan
 - name: sb_hard_object
   type: string
-  length: 1
+  length: 3
   enumerations:
   - N
   - Y
+  - nan
 - name: sb_other
   type: string
-  length: 1
+  length: 3
   enumerations:
   - N
   - Y
+  - nan
 - name: sb_outline_of_weapon
   type: string
-  length: 1
+  length: 3
   enumerations:
   - N
   - Y
+  - nan
 - name: searched
   type: string
   length: 1
@@ -615,132 +705,143 @@
   - Y
 - name: summons_offense
   type: string
-  length: 18
+  length: 30
   examples:
   - '*'
   - '0'
-  - 165.15 (03)
-  - 'DISCON: REFUSE LAW'
-  - OBSTRUCTIVE FAILOU
+  - 17-503CAD AC
+  - 10-125-2B (DRINKING IN PUBLIC)
+  - FAIL TO COMPLY W/ POSTED SIGNS
 - name: suspect_age
-  type: float
-  has_nulls: true
-  length:
-  - 4
-  - 1
+  type: string
+  length: 6
   examples:
-  - 0.0
-  - 999.0
-  - 154.0
+  - '0'
+  - '1'
+  - '550'
+  - '1655.0'
+  - '1271.0'
 - name: suspect_build
   type: string
-  length: 1
+  length: 3
   enumerations:
   - H
   - M
   - T
   - U
   - Z
+  - nan
 - name: suspect_dob
-  type: float
-  has_nulls: true
-  length:
-  - 9
-  - 1
+  type: string
+  length: 10
   examples:
-  - 1011001.0
-  - 12312012.0
-  - 1301981.0
+  - nan
+  - '1011901'
+  - '7161969.0'
+  - '1946-04-26'
+  - '1940-10-20'
 - name: suspect_eye_color
   type: string
-  length: 2
+  length: 3
   examples:
   - Z
   - P
-  - HA
-  - VI
-  - MC
+  - GY
+  - UN
+  - nan
 - name: suspect_hair_color
   type: string
-  length: 2
+  length: 3
   examples:
   - BK
   - BR
   - SP
-  - SN
-  - DY
+  - FR
+  - nan
 - name: suspect_height_feet
-  type: integer
-  length: 2
-  enumerations:
-  - 3
-  - 4
-  - 5
-  - 6
-  - 7
-- name: suspect_height_inches
-  type: integer
-  length: 2
+  type: float
+  has_nulls: true
+  length:
+  - 2
+  - 1
   examples:
-  - 0
-  - 11
+  - 0.0
+  - 9.0
+  - 7.0
+- name: suspect_height_inches
+  type: float
+  has_nulls: true
+  length:
+  - 3
+  - 1
+  examples:
+  - 0.0
+  - 91.0
+  - 78.0
 - name: suspect_other_features
   type: string
-  length: 17
+  length: 18
   examples:
-  - '5'
   - Y
-  - NONE VISIBLE
-  - TATTOO ON LEFT NE
-  - CHINESE SYMBOL ON
+  - '`'
+  - GRAY SWEATER
+  - TATTOOS  FLOWERS A
+  - SCAR SIDE OF CHEEK
 - name: suspect_race
   type: string
-  length: 1
-  enumerations:
-  - A
+  length: 3
+  examples:
   - B
-  - I
-  - P
   - Q
-  - U
-  - W
-  - Z
+  - A
+  - X
+  - nan
 - name: suspect_sex
   type: string
-  length: 1
+  length: 3
   enumerations:
   - F
   - M
   - Z
+  - nan
 - name: suspect_type_of_id
   type: string
-  length: 1
+  length: 3
   enumerations:
   - O
   - P
   - R
   - V
+  - nan
 - name: suspect_weight
-  type: integer
-  length: 3
-  examples:
-  - 0
-  - 999
-  - 2
-- name: timestop
-  type: integer
-  length: 3
-  examples:
-  - 0
-  - 2359
-  - 1427
-- name: ucb_serialnum
-  type: integer
-  length: 4
-  examples:
+  type: float
+  has_nulls: true
+  length:
+  - 6
   - 1
-  - 24652
-  - 12308
+  examples:
+  - 0.0
+  - 20000.0
+  - 1900.0
+- name: timestop
+  type: string
+  length: 6
+  examples:
+  - '5'
+  - '1'
+  - '103.0'
+  - '2456.0'
+  - '2533.0'
+- name: ucb_serialnum
+  type: float
+  has_nulls: true
+  length:
+  - 7
+  - 1
+  examples:
+  - 1.0
+  - 999993.0
+  - 24438.0
 - name: xcoord
   type: float
   has_nulls: true
@@ -748,9 +849,9 @@
   - 8
   - 1
   examples:
-  - 913844.0
-  - 1067249.0
-  - 980522.0
+  - 587453.0
+  - 1067256.0
+  - 1021119.0
 - name: ycoord
   type: float
   has_nulls: true
@@ -758,21 +859,22 @@
   - 7
   - 1
   examples:
-  - 121061.0
-  - 271882.0
-  - 177081.0
+  - 24560.0
+  - 981349.0
+  - 237819.0
 - name: year
   type: integer
   length: 3
-  enumerations:
-  - 2012
-  - 2013
+  examples:
+  - 2003
+  - 2015
+  - 2007
 - name: datetime_stop
   type: datetime
   examples:
-  - 2012-01-01 00:00
-  - 2013-12-31 93:00
-  - 2012-12-31 13:50
+  - 0-01-20-06 00:00
+  - 9-30-20-06 42:00
+  - 2012-02-12 20:01
 - name: force_type_used
   type: string
   length: 14
@@ -790,9 +892,9 @@
   - 7
   - 5
   examples:
-  - -74.25318
-  - -73.70049
-  - -73.749
+  - -75.43364
+  - -73.70047
+  - -73.8503
 - name: latitude
   type: float
   has_nulls: true
@@ -800,9 +902,9 @@
   - 7
   - 5
   examples:
-  - 40.4987
-  - 40.912890000000004
-  - 40.82043
+  - 40.226279999999996
+  - 42.85944
+  - 40.67837
 - name: weapon_type_found
   type: string
   length: 14
